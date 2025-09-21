@@ -1,116 +1,118 @@
-# VALOR — Verified Autonomous Ledger for Online Referendums
+# 🗳️ VALOR – Verified Autonomous Ledger for Online Referendums  
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)  
-[![Build Status](https://github.com/<your-github-username>/VALOR/actions/workflows/ci.yml/badge.svg)](https://github.com/<your-github-username>/VALOR/actions)  
-[![Coverage Status](https://coveralls.io/repos/github/<your-github-username>/VALOR/badge.svg?branch=main)](https://coveralls.io/github/<your-github-username>/VALOR?branch=main)
+**Secure. Anonymous. Scalable.**  
+VALOR is a blockchain and cryptography-based online voting system designed to make elections **tamper-proof, transparent, and verifiable** without compromising voter privacy.  
 
-<div align="center">
-  <img src="docs/images/valor-logo.png" alt="VALOR Logo" width="200"/>
-  <p><strong>A secure, transparent, and scalable e-voting solution</strong></p>
-</div>
+---
 
-[English](Readme.md) | [हिंदी](docs/README_hi.md)
+## 📌 Overview  
+Free and fair elections are the backbone of democracy, yet India’s voting systems face challenges of **tampering, duplicate voting, lack of transparency, and central trust dependency**.  
 
-## Table of contents
-- [Quick start](#quick-start)
-- [Project overview](#project-overview)
-- [Problem](#the-problem)
-- [Solution](#the-solution-valor)
-- [Features](#features)
-- [Architecture](#architecture)
-- [Installation](#installation)
-- [Environment example](#environment-setup)
-- [Testing & CI](#testing--ci)
-- [Contributing](#contributing)
-- [License](#license)
-- [Acknowledgments](#acknowledgments)
+**VALOR** solves this by integrating:  
+- **Blockchain immutability** for tamper-proof records  
+- **Privacy-preserving cryptography** for anonymity  
+- **Zero-Knowledge Proofs (ZKPs)** for verifiable correctness  
+- **Homomorphic encryption** for tallying without decryption  
 
-## Quick start
+This creates a voting platform that is **secure, private, and scalable to millions of voters**.  
 
-```bash
-# Clone and run locally (Node.js >=16)
-git clone https://github.com/<your-github-username>/VALOR.git
-cd VALOR
-npm install
-cp .env.example .env
-# edit .env as needed
-npm run dev
-```
+---
 
-## Project overview
+## 🛑 Problem Statement  
+Current voting systems suffer from:  
+- 🗂️ **Tampering Risks** – Ballots/EVMs can be manipulated.  
+- 👤 **Fake or Duplicate Voting** – Weak identity verification.  
+- 🔒 **Centralized Trust** – Dependence on one authority.  
+- 🚫 **Lack of Transparency** – Voters can’t verify results.  
+- ⚖️ **Scalability Issues** – Difficult to serve India’s massive electorate digitally.  
 
-VALOR is a blockchain + cryptography based online voting system that aims to provide:
-- voter privacy
-- tamper-evident public audit
-- one-person, one-vote guarantees
-- scalability and bilingual accessibility (English/Hindi)
+---
 
-It leverages homomorphic encryption, zero-knowledge proofs, and an immutable ledger for end-to-end verifiability.
+## 💡 The VALOR Solution  
+VALOR ensures **“One Person, One Vote”** with full privacy.  
 
-## The problem
+### 🔑 Core Features  
+✔️ **Anonymous Voter Credentials** – No permanent personal data stored.  
+✔️ **Secure OTP + EPIC/DOB Authentication** – Prevents fake/unauthorized logins.  
+✔️ **Encrypted Ballots** – Votes encrypted locally with Paillier homomorphic encryption.  
+✔️ **Zero-Knowledge Proofs** – Prove validity without exposing identity.  
+✔️ **Immutable Blockchain Ledger** – Votes can’t be changed or deleted.  
+✔️ **End-to-End Verifiability** – Voters can confirm their ballot is counted.  
+✔️ **Bilingual UI (English + Hindi)** – Inclusivity for India’s diverse voters.  
+✔️ **Scalable Architecture** – Designed for millions of users.  
 
-Common issues with current systems:
-- Tampering risks
-- Lack of independent transparency
-- Duplicate/fake voting
-- Heavy reliance on centralized trust
-- Scalability & accessibility challenges
+---
 
-## The solution: VALOR
+## ⚙️ Workflow  
 
-VALOR provides anonymous voter credentials, local ballot encryption, cryptographic nullifiers to prevent double-voting, ZK proofs for validity, and an auditable blockchain ledger.
+### 📝 Registration  
+1. Enter **EPIC Number + DOB + Name + Phone Number**  
+2. Verify via **OTP**  
+3. System generates **anonymous digital credential**  
 
-## Features
+### 🔑 Login  
+- Login with **EPIC + DOB/Password + OTP**  
 
-| Feature | Description |
-|---|---|
-| Anonymous credentials | EPIC/DOB/phone verification → one-time anonymous credential |
-| Secure auth | OTP + password flows; temporary encrypted identity handling |
-| Local ballot encryption | Paillier (or alternative homomorphic scheme) before submit |
-| Immutable ledger | Encrypted ballots + proofs stored on-chain |
-| ZKPs | Prove ballot validity without revealing votes |
-| End-to-end verifiability | Voter can confirm inclusion; public audit via explorer |
-| Bilingual & scalable | UI supports Hindi/English; architecture designed for scale |
+### 🗳️ Voting  
+- Select party/candidate  
+- Vote **encrypted locally**  
+- Submit to blockchain with **ZKP + nullifier**  
+- Receive **confirmation message**  
 
-## Architecture
-```mermaid
-graph TD
-  V[Voter] -->|Auth/API| W[Web Client]
-  W -->|REST/Web3| S[Backend API]
-  S -->|Tx| C[Smart Contracts/Blockchain]
-  S -->|Temp store| DB[Database / Cache]
-  S -->|ZKP| Z[ZK Prover / Verifier]
-```
+### 📊 Results  
+- Votes tallied using **homomorphic aggregation + threshold decryption**  
+- Results published on **Blockscout blockchain explorer**  
+- Public can audit tally, but individual votes remain secret  
 
-## Installation
+---
 
-### Prerequisites
-```bash
-node -v   # >= 16
-npm -v    # >= 8
-docker -v # optional, for containerized deployment
-```
+## 🛠️ Tech Stack  
 
-### Development
-```bash
-npm install
-cp .env.example .env
-# populate .env, then:
-npm run dev
-```
+**Frontend** → React + TailwindCSS (multi-language support)  
+**Backend** → Node.js + Express  
+**Database** → Temporary encrypted storage (PostgreSQL/MongoDB)  
+**Blockchain** → Ethereum Testnet / Polygon + Blockscout  
+**Cryptography** →  
+- Paillier Homomorphic Encryption  
+- Zero-Knowledge Proofs (Circom + SnarkJS)  
+- OTP verification system  
 
-## Environment setup
-See example below and keep secrets out of source control.
+---
 
-````env
-// filepath: d:\gitdemo\VALOR\.env.example
-NODE_ENV=development
-PORT=3000
-MONGODB_URI=mongodb://localhost:27017/valor
-BLOCKCHAIN_RPC=https://polygon-mumbai.infura.io/v3/YOUR-PROJECT-ID
-JWT_SECRET=change-this-to-a-secure-secret
-TWILIO_ACCOUNT_SID=your-twilio-sid
-TWILIO_AUTH_TOKEN=your-twilio-token
-# Add any provider keys (do NOT commit real secrets)
-````
+## 🚀 Roadmap  
+- ✅ Prototype tested with **1,000–2,000 simulated voters** (IRIS 2026 demo)  
+- 🔄 Optimize blockchain layer (scalability via rollups/sharding)  
+- 🔐 Real-world integration with official EPIC verification  
+- 🌍 Deployment on national-scale blockchain infra  
+
+---
+
+## 🎯 Impact  
+VALOR demonstrates that **secure, transparent, and anonymous digital voting is achievable**.  
+It combines **research-backed cryptography** with a **practical, user-friendly design** suited for India’s vast democracy.  
+
+With VALOR, elections can finally be:  
+- **Private** (votes remain secret)  
+- **Verifiable** (anyone can audit results)  
+- **Tamper-proof** (blockchain ensures immutability)  
+- **Scalable** (from thousands → millions of voters)  
+
+---
+
+## 📚 References & Inspiration  
+This project is built upon pioneering work in **electronic voting and cryptography**, including research by:  
+- Josh Benaloh – End-to-End Verifiable Elections  
+- Ben Adida – Helios Voting System  
+- Edward Felten – Secure E-voting Systems  
+- David Chaum – Mixnets & Voting Protocols  
+- Antonio Russo, Hyunyeon Kim, Mohammed Awad, Gretchen A. Macht, Leonie S. Otte, Nicholas D. Bernardo – Blockchain & E-voting advancements  
+
+Additionally, open-source tools like **paillier-bigint**, **Circom/snarkjs**, and blockchain documentation from **Ethereum/Polygon ecosystems** were critical in development.  
+
+---
+
+## 👨‍💻 Author  
+Developed by **[Suyash Kumar]**, Grade **[11th Grade]**  
+(Project submission for **IRIS National Science Fair 2026**)  
+
+---
