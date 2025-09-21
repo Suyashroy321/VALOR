@@ -1,100 +1,116 @@
-# VALOR - Verified Autonomous Ledger for Online Referendums
+# VALOR — Verified Autonomous Ledger for Online Referendums
 
-## Project Overview 📌
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)  
+[![Build Status](https://github.com/<your-github-username>/VALOR/actions/workflows/ci.yml/badge.svg)](https://github.com/<your-github-username>/VALOR/actions)  
+[![Coverage Status](https://coveralls.io/repos/github/<your-github-username>/VALOR/badge.svg?branch=main)](https://coveralls.io/github/<your-github-username>/VALOR?branch=main)
 
-VALOR is a blockchain and cryptography-based online voting system designed to make elections secure, private, transparent, and scalable. It directly addresses challenges faced in current voting systems in India and worldwide — such as duplicate voting, tampering, lack of transparency, and dependence on centralized authorities.
+<div align="center">
+  <img src="docs/images/valor-logo.png" alt="VALOR Logo" width="200"/>
+  <p><strong>A secure, transparent, and scalable e-voting solution</strong></p>
+</div>
 
-The project leverages blockchain immutability, privacy-preserving cryptography, homomorphic encryption, and zero-knowledge proofs (ZKPs) to create a verifiable yet anonymous digital democracy platform.
+[English](Readme.md) | [हिंदी](docs/README_hi.md)
 
-## The Problem 🛑
+## Table of contents
+- [Quick start](#quick-start)
+- [Project overview](#project-overview)
+- [Problem](#the-problem)
+- [Solution](#the-solution-valor)
+- [Features](#features)
+- [Architecture](#architecture)
+- [Installation](#installation)
+- [Environment example](#environment-setup)
+- [Testing & CI](#testing--ci)
+- [Contributing](#contributing)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
 
-Traditional voting systems — whether paper-based or EVMs — suffer from:
+## Quick start
 
-* **Tampering Risks** - Ballots/EVMs can be manipulated
-* **Lack of Transparency** - Voters can't verify results independently
-* **Duplicate / Fake Voting** - Weak identity verification allows abuse
-* **Centralized Trust** - Current systems rely on one authority to be 100% honest
-* **Scalability & Accessibility** - Difficult to serve India's 900+ million voters in a transparent digital system
+```bash
+# Clone and run locally (Node.js >=16)
+git clone https://github.com/<your-github-username>/VALOR.git
+cd VALOR
+npm install
+cp .env.example .env
+# edit .env as needed
+npm run dev
+```
 
-## The Solution: VALOR 💡
+## Project overview
 
-VALOR ensures "One Person, One Vote" without compromising voter privacy.
+VALOR is a blockchain + cryptography based online voting system that aims to provide:
+- voter privacy
+- tamper-evident public audit
+- one-person, one-vote guarantees
+- scalability and bilingual accessibility (English/Hindi)
 
-### Core Features 🔑
+It leverages homomorphic encryption, zero-knowledge proofs, and an immutable ledger for end-to-end verifiability.
 
-#### Anonymous Voter Credentials
-- Voter registers using EPIC (Voter ID) + Date of Birth + Phone verification
-- Details are encrypted and never stored permanently
-- A unique anonymous credential is generated for each voter
+## The problem
 
-#### Secure Authentication
-- **Registration:** EPIC + DOB + Phone OTP + Password creation
-- **Login:** Voter ID + DOB/Password + OTP
-- Ensures only legitimate voters can access the ballot
+Common issues with current systems:
+- Tampering risks
+- Lack of independent transparency
+- Duplicate/fake voting
+- Heavy reliance on centralized trust
+- Scalability & accessibility challenges
 
-#### Vote Casting
-- Each ballot is encrypted locally on the voter's device (Paillier homomorphic encryption)
-- Voter confirms choice → encrypted vote submitted
-- Duplicate voting prevented using cryptographic nullifiers
+## The solution: VALOR
 
-#### Blockchain Ledger
-- Encrypted ballots + proofs stored immutably on blockchain
-- No one can alter or delete votes
-- Public can audit results without seeing individual votes
+VALOR provides anonymous voter credentials, local ballot encryption, cryptographic nullifiers to prevent double-voting, ZK proofs for validity, and an auditable blockchain ledger.
 
-#### Zero-Knowledge Proofs (ZKPs)
-- Guarantee that each vote is valid
-- Ensures privacy + verifiability without revealing identities
+## Features
 
-#### End-to-End Verifiability
-- Voters can check that their ballot is included in the final tally
-- Results are publicly auditable via a blockchain explorer (Blockscout)
+| Feature | Description |
+|---|---|
+| Anonymous credentials | EPIC/DOB/phone verification → one-time anonymous credential |
+| Secure auth | OTP + password flows; temporary encrypted identity handling |
+| Local ballot encryption | Paillier (or alternative homomorphic scheme) before submit |
+| Immutable ledger | Encrypted ballots + proofs stored on-chain |
+| ZKPs | Prove ballot validity without revealing votes |
+| End-to-end verifiability | Voter can confirm inclusion; public audit via explorer |
+| Bilingual & scalable | UI supports Hindi/English; architecture designed for scale |
 
-#### Bilingual & Scalable
-- Interface supports Hindi + English for inclusivity
-- Architecture scales from 1,000 test users → millions of voters
+## Architecture
+```mermaid
+graph TD
+  V[Voter] -->|Auth/API| W[Web Client]
+  W -->|REST/Web3| S[Backend API]
+  S -->|Tx| C[Smart Contracts/Blockchain]
+  S -->|Temp store| DB[Database / Cache]
+  S -->|ZKP| Z[ZK Prover / Verifier]
+```
 
-## How VALOR Works ⚙️
+## Installation
 
-### Registration
-1. Voter enters EPIC number, DOB, and phone number
-2. OTP is sent → after verification, voter sets password
-3. System generates an anonymous credential (cryptographic key)
+### Prerequisites
+```bash
+node -v   # >= 16
+npm -v    # >= 8
+docker -v # optional, for containerized deployment
+```
 
-### Login
-1. Voter logs in using EPIC + DOB/Password + OTP
-2. Gains access to election dashboard
+### Development
+```bash
+npm install
+cp .env.example .env
+# populate .env, then:
+npm run dev
+```
 
-### Voting
-1. Voter selects candidate/party
-2. Vote encrypted locally → submitted to blockchain with ZKP
-3. Voter sees confirmation ("Your vote has been cast successfully")
+## Environment setup
+See example below and keep secrets out of source control.
 
-### Result Day
-1. Encrypted votes tallied using homomorphic aggregation + threshold decryption
-2. Blockchain explorer link provided for full transparency
-3. Everyone can verify tally, no one can trace individual votes
-
-## Tech Stack 🛠️
-
-- **Frontend:** React + TailwindCSS (Bilingual UI: English/Hindi)
-- **Backend:** Node.js / Express
-- **Database:** Encrypted temporary storage (PostgreSQL / MongoDB)
-- **Blockchain:** Ethereum testnet / Polygon (with Blockscout for audit)
-- **Cryptography:**
-  - Homomorphic Encryption (Paillier)
-  - Zero-Knowledge Proofs (Circom / SnarkJS)
-  - OTP-based verification (Twilio or mock OTP system for demo)
-
-## Roadmap 🚀
-
-- ✅ Prototype with 1,000–2,000 simulated voters (IRIS National Science Fair)
-- ⚙️ Optimization for scalability (sharding, rollups for blockchain efficiency)
-- 🔐 Integration of multi-factor identity checks
-- 🌍 Deployment on scalable blockchain infrastructure for national use
-
-## Impact 🎯
-
-VALOR proves that secure, anonymous, and transparent digital voting is possible. It introduces innovations like ZKP-based verifiability, blockchain immutability, and bilingual accessibility — making it uniquely suited for India's scale of democracy.
-
-This project can pave the way for future electoral reforms, ensuring elections are tamper-proof, transparent, and accessible to all citizens.
+````env
+// filepath: d:\gitdemo\VALOR\.env.example
+NODE_ENV=development
+PORT=3000
+MONGODB_URI=mongodb://localhost:27017/valor
+BLOCKCHAIN_RPC=https://polygon-mumbai.infura.io/v3/YOUR-PROJECT-ID
+JWT_SECRET=change-this-to-a-secure-secret
+TWILIO_ACCOUNT_SID=your-twilio-sid
+TWILIO_AUTH_TOKEN=your-twilio-token
+# Add any provider keys (do NOT commit real secrets)
+````
