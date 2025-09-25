@@ -1,4 +1,4 @@
-# 🗳️ VALOR – Verified Autonomous Ledger for Online Referendums  
+# 🗳️ VALOR – Verified Anonymous Ledger for Open Referendums  
 
 **Secure. Anonymous. Scalable.**  
 VALOR is a blockchain and cryptography-based online voting system designed to make elections **tamper-proof, transparent, and verifiable** without compromising voter privacy.  
